@@ -1,18 +1,29 @@
 class X2Items_WeaponTest extends  X2Item config(GameData_WeaponData);
 
-
 // This data is modified in a configuration file
-var config WeaponDamageValue  Example_BASEDAMAGE;       //With this we edit the Damage  Spread, PlusOne, Crit, Pierce, Shred, Tag, DamageType            
+var config WeaponDamageValue  ExampleRifle_BASEDAMAGE;       //With this we edit the Damage  Spread, PlusOne, Crit, Pierce, Shred, Tag, DamageType            
 
+var config WeaponDamageValue ExampleRifle_MAGNETIC_BASEDAMAGE;
+var config WeaponDamageValue  ExampleRifle_BEAM_BASEDAMAGE;
 
+// Rifles
+//Conv
 var config int Example_AIM;
 var config int Example_CRITCHANCE;
 var config int Example_ICLIPSIZE; //The amount of weapon ammunition before it needs to reload again
 var config int Example_ISOUNDRANGE; //Range in Meters, for alerting enemies; 
 var config int Example_IENVIRONMENTDAMAGE;//Damage caused to an object (trees, cars, covers) 
 
+//Mag
+var config int ExampleMag_AIM;
+var config int ExampleMag_CRITCHANCE;
+var config int ExampleMag_ICLIPSIZE; //The amount of weapon ammunition before it needs to reload again
+var config int ExampleMag_ISOUNDRANGE; //Range in Meters, for alerting enemies; 
+var config int ExampleMag_IENVIRONMENTDAMAGE;//Damage caused to an object (trees, cars, covers) 
 
 var config array<int> Example_RANGE; // the range of the weapon
+
+var config array<int> Example_MagRANGE; // the range of the weapon
 
 
 static function array<X2DataTemplate> CreateTemplates() //With this we create the weapon templates
@@ -83,5 +94,58 @@ static function X2DataTemplate ExampleRifle() // With this we begin to create th
 
 	Template.DamageTypeTemplateName = 'Projectile_Conventional';
 	
+	return Template;
+}
+
+static function X2DataTemplate ExampleRifle_Magnetic()
+{
+	local X2WeaponTemplate Template;
+
+	`CREATE_X2TEMPLATE(class'X2WeaponTemplate', Template, 'ExampleRifle_MG');
+	Template.WeaponPanelImage = "_MagneticRifle";                       // used by the UI. Probably determines iconview of the weapon.
+
+	Template.WeaponCat = 'rifle';
+	Template.WeaponTech = 'magnetic';
+	Template.ItemCat = 'weapon';
+	Template.strImage = "img:///UILibrary_Common.UI_MagAssaultRifle.MagAssaultRifle_Base";
+	Template.EquipSound = "Magnetic_Weapon_Equip";
+	Template.Tier = 2;
+
+	Template.RangeAccuracy = default.Example_MagRANGE;
+	Template.BaseDamage = default.ExampleRifle_MAGNETIC_BASEDAMAGE;
+	Template.Aim = default.ExampleMag_AIM;
+	Template.CritChance = default.ExampleMag_CRITCHANCE;
+	Template.iClipSize = default.ExampleMag_ICLIPSIZE;
+	Template.iSoundRange = default.ExampleMag_ISOUNDRANGE;
+	Template.iEnvironmentDamage = default.ExampleMag_IENVIRONMENTDAMAGE;
+
+	Template.NumUpgradeSlots = 2;
+	
+	Template.InventorySlot = eInvSlot_PrimaryWeapon;
+	Template.Abilities.AddItem('StandardShot');
+	Template.Abilities.AddItem('Overwatch');
+	Template.Abilities.AddItem('OverwatchShot');
+	Template.Abilities.AddItem('Reload');
+	Template.Abilities.AddItem('HotLoadAmmo');
+	
+	Template.GameArchetype = "WP_AssaultRifle_MG.WP_AssaultRifle_MG";
+	Template.UIArmoryCameraPointTag = 'UIPawnLocation_WeaponUpgrade_AssaultRifle';
+	Template.AddDefaultAttachment('Mag', "MagAssaultRifle.Meshes.SM_MagAssaultRifle_MagA", , "img:///UILibrary_Common.UI_MagAssaultRifle.MagAssaultRifle_MagA");
+	Template.AddDefaultAttachment('Suppressor', "MagAssaultRifle.Meshes.SM_MagAssaultRifle_SuppressorA", , "img:///UILibrary_Common.UI_MagAssaultRifle.MagAssaultRifle_SupressorA");
+	Template.AddDefaultAttachment('Reargrip', "MagAssaultRifle.Meshes.SM_MagAssaultRifle_ReargripA", , /* included with TriggerA */);
+	Template.AddDefaultAttachment('Stock', "MagAssaultRifle.Meshes.SM_MagAssaultRifle_StockA", , "img:///UILibrary_Common.UI_MagAssaultRifle.MagAssaultRifle_StockA");
+	Template.AddDefaultAttachment('Trigger', "MagAssaultRifle.Meshes.SM_MagAssaultRifle_TriggerA", , "img:///UILibrary_Common.UI_MagAssaultRifle.MagAssaultRifle_TriggerA");
+	Template.AddDefaultAttachment('Light', "ConvAttachments.Meshes.SM_ConvFlashLight");
+
+	Template.iPhysicsImpulse = 5;
+	
+	Template.CreatorTemplateName = 'AssaultRifle_MG_Schematic'; // The schematic which creates this item
+	Template.BaseItem = 'AssaultRifle_CV'; // Which item this will be upgraded from
+
+	Template.CanBeBuilt = false;
+	Template.bInfiniteItem = true;
+
+	Template.DamageTypeTemplateName = 'Projectile_MagXCom';
+
 	return Template;
 }
