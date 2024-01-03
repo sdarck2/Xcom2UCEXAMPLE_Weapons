@@ -30,7 +30,9 @@ static function array<X2DataTemplate> CreateTemplates() //With this we create th
 {
 	local array<X2DataTemplate> Weapons; // With this we define the array that we will use to add the templates in this case it's Weapons
 	
-	Weapons.AddItem(ExampleRifle());	
+	Weapons.AddItem(ExampleRifle());
+	Weapons.AddItem(ExampleRifle_Magnetic());
+
 
 	return Weapons;
 
